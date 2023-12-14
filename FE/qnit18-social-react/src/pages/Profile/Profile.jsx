@@ -84,7 +84,7 @@ const Profile = () => {
               <div className='space-y-5 w-[70%] my-10'>
                 {posts.map(item => (
                   <div className='border border-slate-100 rounded-md'>
-                    <PostCard />
+                    <PostCard item={item}/>
                   </div>
                 ))}
               </div>

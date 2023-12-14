@@ -8,14 +8,17 @@ import ShareIcon from '@mui/icons-material/Share';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import { useDispatch } from 'react-redux';
-import { createCommentAction } from '../../Redux/Post/post.action';
+import { useDispatch, useSelector } from 'react-redux';
+import { createCommentAction, likePostAction } from '../../Redux/Post/post.action';
+import { store } from '../../Redux/store';
+import { idLikeByReqUser } from '../../utils/isLikeByReqUser';
 
 const PostCard = ({ item }) => {
 
   const [showComments, setShowComment] = useState(false);
   const dispatch = useDispatch();
 
+  const { post, auth } = useSelector(store => store)
 
   const handleShowComment = () => setShowComment(!showComments);
 
@@ -29,7 +32,11 @@ const PostCard = ({ item }) => {
     dispatch(createCommentAction(reqData))
   }
 
+  const handleLikePost = () => {
+    dispatch(likePostAction(item.id))
+  }
 
+  console.log("Is like:" , idLikeByReqUser(auth.user.id, item));
 
   return (
     <Card className=''>
@@ -47,12 +54,13 @@ const PostCard = ({ item }) => {
         title={item.user.firstName + " " + item.user.lastName}
         subheader={"@" + item.user.firstName.toLowerCase() + "_" + item.user.lastName.toLowerCase()}
       />
-      <CardMedia
+      {/* <CardMedia
         component="img"
-        height="194"
+        height="100"
         image={item.image}
         alt="Paella dish"
-      />
+      /> */}
+      <img className='w-full max-h-[30rem] object-cover object-top' src={item.image} alt="" />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
           {item.caption}
@@ -60,13 +68,11 @@ const PostCard = ({ item }) => {
       </CardContent>
       <CardActions className='flex justify-between' disableSpacing>
         <div>
-          <IconButton>
-            {true ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+          <IconButton onClick={handleLikePost}>
+            {idLikeByReqUser(auth.user.id, item) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
           </IconButton>
 
-          <IconButton>
-            <ShareIcon />
-          </IconButton>
+          <span style={{ margin: '0 5px' }}></span> 
 
           <IconButton onClick={handleShowComment}>
             <ChatBubbleIcon />
@@ -75,6 +81,12 @@ const PostCard = ({ item }) => {
         </div>
         <div>
           <div>
+            <IconButton>
+              <ShareIcon />
+            </IconButton>
+
+            <span style={{ margin: '0 5px' }}></span> 
+
             <IconButton>
               {true ? <BookmarkIcon /> : <BookmarkBorderIcon />}
             </IconButton>
@@ -99,7 +111,7 @@ const PostCard = ({ item }) => {
         </div>
 
         <Divider />
-        {item.comments.map(comment => <div className='mx-3 space-y-2 my-5 text-xs'>
+        {item.comments?.map(comment => <div className='mx-3 space-y-2 my-5 text-xs'>
           <div className='flex items-center space-x-5'>
             <Avatar sx={{ height: "2rem", width: "2rem", fontSize: ".8rem" }}>
               {comment.user.firstName[0]}

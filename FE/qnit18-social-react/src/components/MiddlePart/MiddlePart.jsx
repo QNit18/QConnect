@@ -32,7 +32,7 @@ const MiddlePart = () => {
 
   useEffect(() => {
     dispatch(getAllPostAction())
-  },[])
+  },[post.newComment])
 
   return (
     <div className='px-20'>
@@ -95,7 +95,7 @@ const MiddlePart = () => {
       </div>
 
       <div>
-        <CreatePostModal handleClose={handleOpenCreatePostModal} open={openCreatePostModal}/>
+        <CreatePostModal handleClose={handleCloseCreatePostModal} open={openCreatePostModal}/>
       </div>
     </div>
   )

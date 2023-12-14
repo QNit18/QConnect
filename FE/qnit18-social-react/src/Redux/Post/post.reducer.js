@@ -17,7 +17,8 @@ const initialState = {
     error: null,
     posts: [],
     like: null,
-    comments:[]
+    comments:[],
+    newComment:null
 };
 
 export const postReducer = (state = initialState, action) => {
@@ -31,7 +32,7 @@ export const postReducer = (state = initialState, action) => {
             return {
                 ...state,
                 post: action.payload,
-                posts: [action.payload, ...state.post],
+                posts: [action.payload, ...state.posts],
                 loading: false,
                 error: null,
             };
@@ -57,7 +58,7 @@ export const postReducer = (state = initialState, action) => {
         case CREATE_COMMENT_SUCCESS:
           return {
             ...state,
-            comments: [action.payload, ...state.comments],
+            newComment:action.payload,
             loading: false,
             error: null,
           }
