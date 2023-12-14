@@ -2,6 +2,8 @@ import { Card, Grid } from '@mui/material'
 import React from 'react'
 import Login from './Login'
 import Register from './Register'
+import { HomePage } from '../HomePage/HomePage'
+import { Route, Routes } from 'react-router-dom'
 
 const Authentication = () => {
   return (
@@ -19,10 +21,11 @@ const Authentication = () => {
                 <h1 className='logo text-center'>QNit18 Social</h1>
                 <p className='text-center text-sm w-[70&]'>Kết nối cộng đồng, sẻ chia khoảnh khắc</p>
               </div>
-
-              <Login/>
-              {/* <Register/> */}
-
+              <Routes>
+                <Route path='/' element={<Login/>}/>
+                <Route path='/login' element={<Login/>}/>
+                <Route path='/register' element={<Register/>}/>
+              </Routes>
             </Card>
 
           </div>
